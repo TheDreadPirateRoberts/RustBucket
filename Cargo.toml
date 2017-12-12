@@ -1,5 +1,5 @@
 [package]
-name = "guessing_game"
+name = "RustBucket"
 version = "0.1.0"
 authors = ["Phil Lewis <dharma66@gmail.com>"]
 
