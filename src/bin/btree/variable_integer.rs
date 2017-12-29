@@ -5,13 +5,14 @@ pub fn read(buf: &[u8]) -> Result<(u64, usize), &'static str>{
     let mut bytes = 0;
     for (i, n) in buf.iter().enumerate() {
         if n & check_bit == 128{
+            if i == 8 {println!("HERE!!!");return Err("Ninth byte of VLI must have bit 8 unset");}
             let m = n - 128;
             value = value << 7;
             value += m as u64;
         } else{
             value = value << 7;
             value += *n as u64;
-            bytes += 1;
+            bytes = i + 1;
             break;
         }
     }
@@ -59,4 +60,10 @@ fn test_five_byte_1() {
 fn test_five_byte_2() {
     assert_eq!(read(&[0x81, 0x81, 0x81, 0x81, 0x01]).unwrap().0, 0x10204081);
     assert_eq!(read(&[0x81, 0x81, 0x81, 0x81, 0x01]).unwrap().1, 5);
+}
+
+#[test]
+fn test_byte_nine_issue() {
+    assert_eq!(read(&[0x81, 0x81, 0x81, 0x81, 0x81,
+        0x81, 0x81, 0x81, 0xff]).err(), Some("Ninth byte of VLI must have bit 8 unset"));
 }
