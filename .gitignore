@@ -11,3 +11,6 @@
 
 # Ignore CLion local config.
 .idea/
+
+# Ignore local area for scratch files
+/scratch/
